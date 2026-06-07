@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>国际象棋</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <header class="toolbar">
+    <div class="mode-switch">
+      <button id="btn-mode-pvp" class="mode-btn active" onclick="setMode('pvp')">&#x1F465; 双人</button>
+      <button id="btn-mode-pve" class="mode-btn" onclick="setMode('pve')">&#x1F916; 人机</button>
+      <button id="btn-mode-puzzle" class="mode-btn" onclick="setMode('puzzle')">&#x1F3AF; 闯关</button>
+    </div>
+    <div id="pve-options" class="pve-options hidden">
+      <label>玩家执：</label>
+      <button id="btn-color-white" class="color-btn active" onclick="setPlayerColor('white')">&#x26AA; 白</button>
+      <button id="btn-color-black" class="color-btn" onclick="setPlayerColor('black')">&#x26AB; 黑</button>
+      <span class="sep">|</span>
+      <label>难度：</label>
+      <select id="difficulty-select" class="difficulty-select" onchange="setDifficulty(this.value)">
+        <option value="beginner">&#x1F476; 初学者</option>
+        <option value="novice">&#x1F9D1; 新手</option>
+        <option value="normal" selected>&#x1F393; 普通</option>
+        <option value="hard">&#x1F480; 困难</option>
+      </select>
+    </div>
+    <div id="puzzle-options" class="pve-options hidden">
+      <span id="puzzle-progress"></span>
+    </div>
+    <div class="actions">
+      <button id="btn-sound" class="action-btn" onclick="toggleSound()" title="音效">&#x1F50A;</button>
+      <button id="btn-undo" class="action-btn" onclick="undoMove()" disabled>&#x21A9; 悔棋</button>
+      <button id="btn-hint" class="action-btn hidden" onclick="showPuzzleHint()">&#x1F4A1; 提示</button>
+      <button id="btn-newgame" class="action-btn primary" onclick="newGame()">&#x1F504; 新游戏</button>
+    </div>
+  </header>
+  <main class="game-area">
+    <div class="board-container">
+      <div class="board-labels files">
+        <span>a</span><span>b</span><span>c</span><span>d</span><span>e</span><span>f</span><span>g</span><span>h</span>
+      </div>
+      <div class="board-wrapper">
+        <div class="board-labels ranks">
+          <span>8</span><span>7</span><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span>
+        </div>
+        <div id="board" class="board"></div>
+      </div>
+    </div>
+    <aside class="sidebar">
+      <!-- 闯关信息 -->
+      <div id="puzzle-info" class="puzzle-info hidden">
+        <div class="puzzle-header">
+          <span id="puzzle-title" class="puzzle-title"></span>
+          <span id="puzzle-difficulty" class="puzzle-badge"></span>
+        </div>
+        <p id="puzzle-desc" class="puzzle-desc"></p>
+        <p id="puzzle-hint-text" class="puzzle-hint hidden"></p>
+        <div id="puzzle-result" class="puzzle-result hidden"></div>
+      </div>
+      <h3 id="history-title">&#x1F4DC; 走棋记录</h3>
+      <div id="move-history" class="move-history">
+        <p class="placeholder">等待第一步……</p>
+      </div>
+      <div id="game-status" class="game-status"></div>
+      <!-- 闯关按钮组 -->
+      <div id="puzzle-nav" class="puzzle-nav hidden">
+        <button onclick="prevPuzzle()" id="btn-prev-puzzle">&#x2B05; 上一关</button>
+        <button onclick="nextPuzzle()" id="btn-next-puzzle">&#x27A1; 下一关</button>
+      </div>
+    </aside>
+  </main>
+
+  <!-- 悬停提示 -->
+  <div id="hover-hint" class="hover-hint hidden"></div>
+
+  <!-- 升变弹窗 -->
+  <div id="promotion-overlay" class="overlay hidden">
+    <div class="promotion-dialog">
+      <h3>选择升变棋子</h3>
+      <div id="promotion-pieces" class="promotion-pieces"></div>
+    </div>
+  </div>
+
+  <!-- 胜利特效层 -->
+  <div id="effects-layer" class="effects-layer"></div>
+</div>
+
+<script src="chess.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => { initGame(); });
+</script>
+</body>
+</html>
